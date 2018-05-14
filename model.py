@@ -57,44 +57,36 @@ class Vectorizer():
             if isinstance(corpus, str):
                 if not len(corpus):
                     raise ValueError("`corpus` cannot be empty")
-                vocab.update(
-                    utils.clean_word(word)
-                    for word
-                    in corpus.split()
-                )
+                vocab.update(utils.clean_word(word)
+                             for word
+                             in corpus.split())
             elif isinstance(corpus, list) and all(isinstance(word, str) for word in corpus):
                 if not len(corpus):
                     raise ValueError("`corpus` cannot be empty")
-                vocab.update(
-                    utils.clean_word(word)
-                    for word
-                    in corpus
-                )
+                vocab.update(utils.clean_word(word)
+                             for word
+                             in corpus)
             else:
                 raise TypeError("`corpus` must be str or list of str")
         elif corpus_filepath is not None:
             if isinstance(corpus_filepath, str):
                 with open(corpus_filepath) as corpus_file:
-                    vocab.update(
-                        utils.clean_word(word)
-                        for word
-                        in corpus_file.read()
-                                      .strip()
-                                      .split()
-                    )
+                    vocab.update(utils.clean_word(word)
+                                 for word
+                                 in corpus_file.read()
+                                               .strip()
+                                               .split())
             else:
                 raise ValueError("`corpus_filepath` must be str")
         elif corpus_dir is not None:
             if isinstance(corpus_dir, str):
                 for filename in os.listdir(corpus_dir):
                     with open(os.path.join(corpus_dir, filename)) as corpus_file:
-                        vocab.update(
-                            utils.clean_word(word)
-                            for word
-                            in corpus_file.read()
-                                          .strip()
-                                          .split()
-                        )
+                        vocab.update(utils.clean_word(word)
+                                     for word
+                                     in corpus_file.read()
+                                                   .strip()
+                                                   .split())
             else:
                 raise ValueError("`corpus_dir` must be str")
         else:
