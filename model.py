@@ -12,14 +12,19 @@ import utils
 
 
 class Vectorizer():
+    '''
+
+
+    Attributes
+    ----------
+
+
+    Methods
+    -------
+    
+
+    '''
     def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None):
-        '''
-
-        '''
-        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
-        self.embedding: nn.Embedding = nn.Embedding(embedding_dim, len(self._vocab))
-
-    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> List[str]:
         '''
 
 
@@ -34,12 +39,11 @@ class Vectorizer():
         corpus_dir : str, optional
 
 
-        Returns
-        -------
-        vocab : set
-
-
         '''
+        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
+        self.module = nn.Embedding(embedding_dim, len(self._vocab))
+
+    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> List[str]:
         vocab: Set[str] = set()
 
         if sum([corpus_param is None for corpus_param in [corpus, corpus_filename, corpus_dir]]) > 1:
@@ -48,7 +52,11 @@ class Vectorizer():
             if isinstance(corpus, str):
                 if not len(corpus):
                     raise ValueError("`corpus` cannot be empty")
-                raise NotImplementedError()
+                vocab.update(
+                    utils.clean_word(word)
+                    for word
+                    in corpus.split()
+                )
             elif isinstance(corpus, list) and all(isinstance(elem, str) for elem in corpus):
                 if not len(corpus):
                     raise ValueError("`corpus` cannot be empty")
