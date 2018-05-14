@@ -35,7 +35,7 @@ class Vectorizer():
 
 
     '''
-    
+
     def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None):
         self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpus_dir=corpus_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
@@ -95,6 +95,25 @@ class Vectorizer():
 
         return ["<SOS>", "<EOS>"] + list(vocab)
 
+    def vectorize(self, words: List[str]) -> torch.Tensor:
+        '''
+
+
+        '''
+        # TODO: typecheck words
+        try:
+            indices = torch.tensor([self._vocab.index(word) for word in words])
+        except ValueError as e:
+            raise ValueError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
+        return self.module(indices)
+
+    def lookup(self, indices: torch.Tensor) -> List[str]:
+        '''
+
+
+        '''
+        raise NotImplementedError()
+
 class Encoder(nn.Module):
     def __init__(self):
         super(Encoder, self).__init__()
@@ -104,3 +123,13 @@ class Decoder(nn.Module):
     def __init__(self):
         super(Decoder, self).__init__()
         raise NotImplementedError()
+
+if __name__ == "__main__":
+    corpus = "This is the entire corpus. Seriously, it's contained in here. All of it."
+    print("corpus: \n\t{}".format(corpus))
+    vectorizer = Vectorizer(corpus=corpus)
+    print("Vectorizer initialized successfully.")
+    print("vocabulary:")
+    for word in vectorizer._vocab:
+        print("\t{}".format(word))
+    print("[\"all\", \"this\"] vectorized: \n\t{}".format(vectorizer.vectorize(["all", "this"])))
