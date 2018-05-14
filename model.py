@@ -40,13 +40,13 @@ class Vectorizer():
             Path to directory containing text files that represent the corpus.
 
         '''
-        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpur_dir=corpur_dir)
+        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpus_dir=corpus_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
 
     def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None) -> List[str]:
         vocab: Set[str] = set()
 
-        if sum([corpus_param is None for corpus_param in [corpus, corpus_filepath, corpus_dir]]) > 1:
+        if sum([corpus_param is not None for corpus_param in [corpus, corpus_filepath, corpus_dir]]) > 1:
             raise ValueError("Cannot have multiple corpora")
         if corpus is not None:
             if isinstance(corpus, str):
@@ -74,7 +74,6 @@ class Vectorizer():
                         utils.clean_word(word)
                         for word
                         in corpus_file.read()
-                                      .lower()
                                       .strip()
                                       .split()
                     )
@@ -88,7 +87,6 @@ class Vectorizer():
                             utils.clean_word(word)
                             for word
                             in corpus_file.read()
-                                          .lower()
                                           .strip()
                                           .split()
                         )
