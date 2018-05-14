@@ -54,7 +54,7 @@ class Vectorizer():
                     for word
                     in corpus.split()
                 )
-            elif isinstance(corpus, list) and all(isinstance(elem, str) for elem in corpus):
+            elif isinstance(corpus, list) and all(isinstance(word, str) for word in corpus):
                 if not len(corpus):
                     raise ValueError("`corpus` cannot be empty")
                 vocab.update(
@@ -100,7 +100,8 @@ class Vectorizer():
 
 
         '''
-        # TODO: typecheck words
+        if not (isinstance(words, list) and all(isinstance(word, str) for word in words)):
+            raise ValueError("`words` must be list of str")
         try:
             indices = torch.tensor([self._vocab.index(word) for word in words])
         except ValueError as e:
