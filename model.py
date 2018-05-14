@@ -41,7 +41,7 @@ class Vectorizer():
                  embedding_dim: int = 100,
                  corpus: Union[str, List[str]] = None,
                  corpus_filepath: str = None, corpus_dir: str = None):
-        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpus_dir=corpus_dir)
+        self._vocab: List[str] = self._init_vocab(corpus, corpus_filepath, corpus_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
 
     def _init_vocab(self,
