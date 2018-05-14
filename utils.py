@@ -1,4 +1,5 @@
 def clean_word(word: str) -> str:
-    return word.replace('’', '\'')       \
+    return word.strip()                   \
+               .replace('’', '\'')        \
                .lstrip('<(\'"“')          \
                .rstrip('>)\'"”.,!?:;—-…')
