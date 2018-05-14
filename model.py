@@ -17,7 +17,7 @@ class Vectorizer():
 
         '''
         self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
-        self.embedding: nn.Embedding = self._init_embedding(embedding_dim)
+        self.embedding: nn.Embedding = nn.Embedding(embedding_dim, len(self._vocab))
 
     def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> List[str]:
         '''
@@ -92,24 +92,12 @@ class Vectorizer():
 
         return ["<SOS>", "<EOS>"] + list(vocab)
 
-    def _init_embedding(self, embedding_dim: int) -> nn.Embedding:
-        '''
-
-
-        Parameters
-        ----------
-
-
-        Returns
-        -------
-
-        '''
-        return nn.Embedding(embedding_dim, len(self._vocab))
-
 class Encoder(nn.Module):
     def __init__(self):
         super(Encoder, self).__init__()
+        raise NotImplementedError()
 
 class Decoder(nn.Module):
     def __init__(self):
         super(Decoder, self).__init__()
+        raise NotImplementedError()
