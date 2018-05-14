@@ -106,7 +106,7 @@ class Vocabulary():
         except ValueError as e:
             raise ValueError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
 
-    def lookup(self, indices: torch.Tensor) -> List[str]:
+    def wordify(self, indices: torch.Tensor) -> List[str]:
         '''
 
 
