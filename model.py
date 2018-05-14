@@ -125,7 +125,7 @@ class Decoder(nn.Module):
         super(Decoder, self).__init__()
         raise NotImplementedError()
 
-if __name__ == "__main__":
+def main():
     corpus = "This is the entire corpus. Seriously, it's contained in here. All of it."
     print("corpus: \n\t{}".format(corpus))
     vectorizer = Vectorizer(corpus=corpus)
@@ -134,3 +134,6 @@ if __name__ == "__main__":
     for word in vectorizer._vocab:
         print("\t{}".format(word))
     print("[\"all\", \"this\"] vectorized: \n\t{}".format(vectorizer.vectorize(["all", "this"])))
+
+if __name__ == "__main__":
+    main()
