@@ -21,10 +21,10 @@ class Vectorizer():
 
     Methods
     -------
-    
+
 
     '''
-    def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None):
+    def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None):
         '''
 
 
@@ -34,19 +34,19 @@ class Vectorizer():
 
         corpus : str or list of str, optional
 
-        corpus_filename : str, optional
-
+        corpus_filepath : str, optional
+            Path to text file containing the entire corpus.
         corpus_dir : str, optional
-
+            Path to directory containing text files that represent the corpus.
 
         '''
-        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
+        self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpur_dir=corpur_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
 
-    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> List[str]:
+    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None) -> List[str]:
         vocab: Set[str] = set()
 
-        if sum([corpus_param is None for corpus_param in [corpus, corpus_filename, corpus_dir]]) > 1:
+        if sum([corpus_param is None for corpus_param in [corpus, corpus_filepath, corpus_dir]]) > 1:
             raise ValueError("Cannot have multiple corpora")
         if corpus is not None:
             if isinstance(corpus, str):
@@ -67,9 +67,9 @@ class Vectorizer():
                 )
             else:
                 raise TypeError("`corpus` must be str or list of str")
-        elif corpus_filename is not None:
-            if isinstance(corpus_filename, str):
-                with open(corpus_filename) as corpus_file:
+        elif corpus_filepath is not None:
+            if isinstance(corpus_filepath, str):
+                with open(corpus_filepath) as corpus_file:
                     vocab.update(
                         utils.clean_word(word)
                         for word
@@ -79,7 +79,7 @@ class Vectorizer():
                                       .split()
                     )
             else:
-                raise ValueError("`corpus_filename` must be str")
+                raise ValueError("`corpus_filepath` must be str")
         elif corpus_dir is not None:
             if isinstance(corpus_dir, str):
                 for filename in os.listdir(corpus_dir):
