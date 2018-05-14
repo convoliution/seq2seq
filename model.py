@@ -93,7 +93,7 @@ class Vectorizer():
             raise ValueError("A corpus must be provided")
         vocab.discard('')
 
-        return ["<SOS>", "<EOS>"] + list(vocab)
+        return ["<start>", "<end>"] + list(vocab)
 
     def vectorize(self, words: List[str]) -> torch.Tensor:
         '''
