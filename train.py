@@ -1,4 +1,7 @@
+import torch
+
 import utils
+
 
 corpus = "This is the entire corpus. Seriously, it's contained in here. All of it."
 print("Corpus: \n\t{}".format(corpus))

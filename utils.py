@@ -104,7 +104,7 @@ class Vocabulary():
         try:
             return torch.tensor([self._vocab.index(word) for word in words])
         except ValueError as e:
-            raise ValueError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
+            raise KeyError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
 
     def wordify(self, indices: torch.Tensor) -> List[str]:
         '''
@@ -113,4 +113,13 @@ class Vocabulary():
         '''
         if not isinstance(indices, torch.Tensor):
             raise TypeError("`indices` must be a Tensor")
-        return [self._vocab[index] for index in indices.tolist()]
+        if indices.dtype in [torch.float16, torch.float32, torch.float64]:
+            raise TypeError("`indices` must only contain integers")
+        indices = indices.tolist()
+        vocab_length = len(self._vocab)
+        words = []
+        for index in indices:
+            if index < 0 or index >= vocab_length:
+                raise KeyError("`indices` must only contain values between 0 and {} inclusive".format(vocab_length-1))
+            words.append(self._vocab[index])
+        return words
