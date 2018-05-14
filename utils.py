@@ -2,8 +2,6 @@ from typing import List, Set, Union
 
 import os
 
-import torch
-
 
 class Vocabulary():
     '''
@@ -20,10 +18,16 @@ class Vocabulary():
 
     Attributes
     ----------
-
+    size : int
+        Number of words stored in the vocabulary.
 
     Methods
     -------
+    clean_word(word)
+        Static. Returns `word` converted to lowercase with certain punctionation stripped off.
+    indexify(words)
+
+    wordify(indices)
 
 
     '''
@@ -33,6 +37,10 @@ class Vocabulary():
                  corpus_filepath: str = None,
                  corpus_dir: str = None):
         self._vocab: List[str] = self._init_vocab(corpus, corpus_filepath, corpus_dir)
+
+    @property
+    def size(self):
+        return len(self._vocab)
 
     def __len__(self):
         return len(self._vocab)
@@ -50,6 +58,24 @@ class Vocabulary():
                     corpus_filepath: str = None,
                     corpus_dir: str = None) \
                     -> List[str]:
+        '''
+
+
+        Parameters
+        ----------
+        corpus : str or list of str, optional
+            Space-delimited string or list of strings representing the entire corpus.
+        corpus_filepath : str, optional
+            Path to text file containing the entire corpus.
+        corpus_dir : str, optional
+            Path to directory containing text files that represent the corpus.
+
+        Returns
+        -------
+        vocab : list of str
+
+
+        '''
         vocab: Set[str] = set()
 
         if sum([corpus_param is not None for corpus_param in [corpus, corpus_filepath, corpus_dir]]) > 1:
@@ -91,35 +117,52 @@ class Vocabulary():
         else:
             raise ValueError("A corpus must be provided")
         vocab.discard('')
-
         return ["<start>", "<end>"] + list(vocab)
 
-    def indexify(self, words: List[str]) -> torch.Tensor:
+    def indexify(self, words: List[str]) -> List[int]:
         '''
+
+
+        Parameters
+        ----------
+        words : list of str
+
+
+        Returns
+        -------
+        indices : list of int
 
 
         '''
         if not (isinstance(words, list) and all(isinstance(word, str) for word in words)):
             raise TypeError("`words` must be list of str")
         try:
-            return torch.tensor([self._vocab.index(word) for word in words])
+            return [self._vocab.index(word) for word in words]
         except ValueError as e:
             raise KeyError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
 
-    def wordify(self, indices: torch.Tensor) -> List[str]:
+    def wordify(self, indices: List[int]) -> List[str]:
         '''
 
 
+        Parameters
+        ----------
+        indices : list of int
+
+
+        Returns
+        -------
+        words : list of str
+
+
         '''
-        if not isinstance(indices, torch.Tensor):
-            raise TypeError("`indices` must be a Tensor")
-        if indices.dtype in [torch.float16, torch.float32, torch.float64]:
-            raise TypeError("`indices` must only contain integers")
-        indices = indices.tolist()
-        vocab_length = len(self._vocab)
-        words = []
+        if not (isinstance(indices, list) and all(isinstance(index, int) for index in indices)):
+            raise TypeError("`indices` must be list of int")
         for index in indices:
-            if index < 0 or index >= vocab_length:
-                raise KeyError("`indices` must only contain values between 0 and {} inclusive".format(vocab_length-1))
-            words.append(self._vocab[index])
-        return words
+            if index < 0:
+                raise KeyError("`indices` cannot contain negative values")
+
+        try:
+            return [self._vocab[index] for index in indices]
+        except IndexError:
+            raise KeyError("`indices` cannot contain values greater than size of vocabulary")
