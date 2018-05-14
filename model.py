@@ -15,6 +15,17 @@ class Vectorizer():
     '''
 
 
+    Parameters
+    ----------
+    embedding_dim : int, optional
+        Size of text embedding vectors.
+    corpus : str or list of str, optional
+        Space-delimited string or list of strings representing the entire corpus.
+    corpus_filepath : str, optional
+        Path to text file containing the entire corpus.
+    corpus_dir : str, optional
+        Path to directory containing text files that represent the corpus.
+
     Attributes
     ----------
 
@@ -24,22 +35,8 @@ class Vectorizer():
 
 
     '''
+    
     def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None):
-        '''
-
-
-        Parameters
-        ----------
-        embedding_dim : int, optional
-
-        corpus : str or list of str, optional
-
-        corpus_filepath : str, optional
-            Path to text file containing the entire corpus.
-        corpus_dir : str, optional
-            Path to directory containing text files that represent the corpus.
-
-        '''
         self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpus_dir=corpus_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
 
