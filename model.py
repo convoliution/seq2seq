@@ -16,11 +16,10 @@ class Vectorizer():
         '''
 
         '''
-        self._vocab: Set[str] = self._init_vocab(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
-        self._vocab_mapping: Dict[str, int] = self._init_vocab_mapping()
+        self._vocab_to_index: Dict[str, int] = self._init_vocab_to_index(corpus=corpus, corpus_filename=corpus_filename, corpur_dir=corpur_dir)
         self.embedding: nn.Embedding = self._init_embedding(embedding_dim)
 
-    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> Set[str]:
+    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filename: str = None, corpus_dir: str = None) -> Dict[str, int]:
         '''
 
 
@@ -91,10 +90,7 @@ class Vectorizer():
             raise ValueError("A corpus must be provided")
         vocab.discard('')
 
-        return vocab
-
-    def _init_vocab_mapping(self) -> Dict[str, int]:
-        raise NotImplementedError()
+        return {vocab: index for index, vocab in enumerate(["SOS", "EOS"] + list(vocab))}
 
     def _init_embedding(self, embedding_dim: int) -> nn.Embedding:
         '''
