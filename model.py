@@ -19,6 +19,7 @@ class Vectorizer():
     ----------
     embedding_dim : int, optional
         Size of text embedding vectors.
+        Default
     corpus : str or list of str, optional
         Space-delimited string or list of strings representing the entire corpus.
     corpus_filepath : str, optional
@@ -36,11 +37,18 @@ class Vectorizer():
 
     '''
 
-    def __init__(self, embedding_dim: int = 100, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None):
+    def __init__(self,
+                 embedding_dim: int = 100,
+                 corpus: Union[str, List[str]] = None,
+                 corpus_filepath: str = None, corpus_dir: str = None):
         self._vocab: List[str] = self._init_vocab(corpus=corpus, corpus_filepath=corpus_filepath, corpus_dir=corpus_dir)
         self.module = nn.Embedding(embedding_dim, len(self._vocab))
 
-    def _init_vocab(self, corpus: Union[str, List[str]] = None, corpus_filepath: str = None, corpus_dir: str = None) -> List[str]:
+    def _init_vocab(self,
+                    corpus: Union[str, List[str]] = None,
+                    corpus_filepath: str = None,
+                    corpus_dir: str = None) \
+                    -> List[str]:
         vocab: Set[str] = set()
 
         if sum([corpus_param is not None for corpus_param in [corpus, corpus_filepath, corpus_dir]]) > 1:
