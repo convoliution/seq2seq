@@ -71,7 +71,7 @@ class Vocabulary:
         corpus_filepath : str, optional
             Path to text file containing the entire corpus.
         corpus_dir : str, optional
-            Path to directory containing text files that represent the corpus.
+            Path to directory containing text files that represent the entire corpus.
 
         Returns
         -------
