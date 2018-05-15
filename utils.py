@@ -77,7 +77,7 @@ class Vocabulary():
         -------
         vocab : list of str
             Every unique word from the corpus in an arbitrary order. However, a
-            start-of-sequence token "<start>" and an end-of-sequence token "<end>"
+            start-of-sequence token "<SOS>" and an end-of-sequence token "<EOS>"
             are at indices 0 and 1, respectively.
 
         '''
@@ -122,7 +122,7 @@ class Vocabulary():
         else:
             raise ValueError("A corpus must be provided")
         vocab.discard('')
-        return ["<start>", "<end>"] + list(vocab)
+        return ["<SOS>", "<EOS>"] + list(vocab)
 
     def indexify(self, words: List[str]) -> List[int]:
         '''
