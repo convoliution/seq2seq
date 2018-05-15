@@ -22,7 +22,7 @@ class Vocabulary:
     Attributes
     ----------
     size : int
-        Number of words stored in the vocabulary.
+        Number of words stored in the vocabulary sans SOS and EOS tokens.
     words : list of str
         Words stored in the vocabulary sans SOS and EOS tokens.
 
@@ -45,7 +45,7 @@ class Vocabulary:
 
     @property
     def size(self) -> int:
-        return len(self._vocab)
+        return len(self._vocab) - 2
 
     @property
     def words(self) -> List[str]:
