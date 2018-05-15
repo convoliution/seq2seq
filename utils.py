@@ -42,10 +42,10 @@ class Vocabulary:
         self._vocab: List[str] = self._init_vocab(corpus, corpus_filepath, corpus_dir)
 
     @property
-    def size(self):
+    def size(self) -> int:
         return len(self._vocab)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self._vocab)
 
     @staticmethod
