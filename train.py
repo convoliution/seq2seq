@@ -10,7 +10,7 @@ vocabulary = utils.Vocabulary(corpus=corpus)
 print("`vocabulary` initialized successfully.")
 print("Size of `vocabulary`: {}".format(vocabulary.size))
 print("Contents of `vocabulary`:")
-for word in vocabulary._vocab:
+for word in vocabulary.words:
     print("\t{}".format(word))
 
 indices = vocabulary.indexify(["all", "this"])

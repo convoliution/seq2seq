@@ -23,6 +23,8 @@ class Vocabulary:
     ----------
     size : int
         Number of words stored in the vocabulary.
+    words : list of str
+        Words stored in the vocabulary sans SOS and EOS tokens.
 
     Methods
     -------
@@ -44,6 +46,10 @@ class Vocabulary:
     @property
     def size(self) -> int:
         return len(self._vocab)
+
+    @property
+    def words(self) -> List[str]:
+        return self._vocab[2:]
 
     @staticmethod
     def clean_word(word: str) -> str:
