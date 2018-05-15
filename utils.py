@@ -87,13 +87,13 @@ class Vocabulary:
             raise ValueError("Cannot have multiple corpora")
         if corpus is not None:
             if isinstance(corpus, str):
-                if not len(corpus):
+                if len(corpus) == 0:
                     raise ValueError("`corpus` cannot be empty")
                 vocab.update(Vocabulary.clean_word(word)
                              for word
                              in corpus.split())
             elif isinstance(corpus, list) and all(isinstance(word, str) for word in corpus):
-                if not len(corpus):
+                if len(corpus) == 0:
                     raise ValueError("`corpus` cannot be empty")
                 vocab.update(Vocabulary.clean_word(word)
                              for word
