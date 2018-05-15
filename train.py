@@ -8,7 +8,7 @@ print("Corpus: \n\t{}".format(corpus))
 
 vocabulary = utils.Vocabulary(corpus=corpus)
 print("`vocabulary` initialized successfully.")
-print("Length of `vocabulary`: {}".format(len(vocabulary)))
+print("Size of `vocabulary`: {}".format(vocabulary.size))
 print("Contents of `vocabulary`:")
 for word in vocabulary._vocab:
     print("\t{}".format(word))

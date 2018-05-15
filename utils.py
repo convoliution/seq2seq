@@ -45,9 +45,6 @@ class Vocabulary:
     def size(self) -> int:
         return len(self._vocab)
 
-    def __len__(self) -> int:
-        return len(self._vocab)
-
     @staticmethod
     def clean_word(word: str) -> str:
         return word.strip()                    \
