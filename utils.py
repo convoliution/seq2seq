@@ -25,6 +25,10 @@ class Vocabulary:
         Number of words stored in the vocabulary sans SOS and EOS tokens.
     words : list of str
         Words stored in the vocabulary sans SOS and EOS tokens.
+    sos : str
+        SOS token.
+    eos : str
+        EOS token.
 
     Methods
     -------
@@ -50,6 +54,14 @@ class Vocabulary:
     @property
     def words(self) -> List[str]:
         return self._vocab[2:]
+
+    @property
+    def sos(self) -> str:
+        return self._vocab[0]
+
+    @property
+    def eos(self) -> str:
+        return self._vocab[1]
 
     @staticmethod
     def clean_word(word: str) -> str:
@@ -131,6 +143,8 @@ class Vocabulary:
         '''
         Translates words into indices based on this instance's internal vocabulary mapping.
 
+        It is the caller's responsibility to handle SOS and EOS.
+
         Parameters
         ----------
         words : list of str
@@ -152,6 +166,8 @@ class Vocabulary:
     def wordify(self, indices: List[int]) -> List[str]:
         '''
         Translates indices into words based on this instance's internal vocabulary mapping.
+
+        It is the caller's responsibility to handle SOS and EOS.
 
         Parameters
         ----------
