@@ -5,7 +5,10 @@ import os
 
 class Vocabulary():
     '''
+    Object for creating and facilitating a mapping of unique words to unique integers.
 
+    Very very very very loosely based on the `Lang` class from
+    https://pytorch.org/tutorials/intermediate/seq2seq_translation_tutorial.html
 
     Parameters
     ----------
@@ -24,11 +27,11 @@ class Vocabulary():
     Methods
     -------
     clean_word(word)
-        Static. Returns `word` converted to lowercase with certain punctionation stripped off.
+        Static. Returns `word` converted to lowercase with whitespace and certain punctionation stripped off the ends.
     indexify(words)
-
+        Returns indices corresponding to mappings from `words`.
     wordify(indices)
-
+        Returns words corresponding to mappings from `indices`.
 
     '''
 
@@ -59,7 +62,7 @@ class Vocabulary():
                     corpus_dir: str = None) \
                     -> List[str]:
         '''
-
+        Collects unique words from the corpus, cleaning them with `clean_word()` in the process.
 
         Parameters
         ----------
@@ -73,7 +76,9 @@ class Vocabulary():
         Returns
         -------
         vocab : list of str
-
+            Every unique word from the corpus in an arbitrary order. However, a
+            start-of-sequence token "<start>" and an end-of-sequence token "<end>"
+            are at indices 0 and 1, respectively.
 
         '''
         vocab: Set[str] = set()
@@ -121,17 +126,17 @@ class Vocabulary():
 
     def indexify(self, words: List[str]) -> List[int]:
         '''
-
+        Translates words into indices based on this instance's internal vocabulary mapping.
 
         Parameters
         ----------
         words : list of str
-
+            Words present in this instance's vocabulary.
 
         Returns
         -------
         indices : list of int
-
+            Indices corresponding to mappings from `words`.
 
         '''
         if not (isinstance(words, list) and all(isinstance(word, str) for word in words)):
@@ -143,17 +148,17 @@ class Vocabulary():
 
     def wordify(self, indices: List[int]) -> List[str]:
         '''
-
+        Translates indices into words based on this instance's internal vocabulary mapping.
 
         Parameters
         ----------
         indices : list of int
-
+            Indices that map to words in this instance's vocabulary.
 
         Returns
         -------
         words : list of str
-
+            Words corresponding to mappings from `indices`.
 
         '''
         if not (isinstance(indices, list) and all(isinstance(index, int) for index in indices)):
