@@ -3,7 +3,7 @@ from typing import List, Set, Union
 import os
 
 
-class Vocabulary():
+class Vocabulary:
     '''
     Object for creating and facilitating a mapping of unique words to unique integers.
 
