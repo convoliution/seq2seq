@@ -34,7 +34,9 @@ class Vocabulary:
     -------
     clean_word(word)
         Static. Returns `word` converted to lowercase with whitespace and certain punctionation stripped off the ends.
-    indexify(words)
+    sequence(words)
+        Returns cleaned `words` with SOS and EOS tokens concatenated.
+    indexify(sequence)
         Returns indices corresponding to mappings from `words`.
     wordify(indices)
         Returns words corresponding to mappings from `indices`.
@@ -139,7 +141,26 @@ class Vocabulary:
         vocab.discard('')
         return ["<SOS>", "<EOS>"] + list(vocab)
 
-    def indexify(self, words: List[str]) -> List[int]:
+    def sequence(self, words: List[str]) -> List[str]:
+        '''
+        Turns a boring ol' list of words into a sequence.
+
+        Cleans words in `words`, prepends an SOS token, and appends an EOS token.
+
+        Parameters
+        ----------
+        words : list of str
+            Boring ol' list of words.
+
+        Returns
+        -------
+        sequence : list of str
+            Exciting sequence ready for deep learning.
+
+        '''
+        return [self.sos] + [Vocabulary.clean_word(word) for word in words] + [self.eos]
+
+    def indexify(self, sequence: List[str]) -> List[int]:
         '''
         Translates words into indices based on this instance's internal vocabulary mapping.
 
@@ -147,19 +168,19 @@ class Vocabulary:
 
         Parameters
         ----------
-        words : list of str
+        sequence : list of str
             Words present in this instance's vocabulary.
 
         Returns
         -------
         indices : list of int
-            Indices corresponding to mappings from `words`.
+            Indices corresponding to mappings from `sequence`.
 
         '''
-        if not (isinstance(words, list) and all(isinstance(word, str) for word in words)):
-            raise TypeError("`words` must be list of str")
+        if not (isinstance(sequence, list) and all(isinstance(word, str) for word in sequence)):
+            raise TypeError("`sequence` must be list of str")
         try:
-            return [self._vocab.index(word) for word in words]
+            return [self._vocab.index(word) for word in sequence]
         except ValueError as e:
             raise KeyError("'{}' is not in vocabulary".format(str(e).split('\'')[1]))
 
@@ -176,7 +197,7 @@ class Vocabulary:
 
         Returns
         -------
-        words : list of str
+        sequence : list of str
             Words corresponding to mappings from `indices`.
 
         '''
