@@ -7,10 +7,10 @@ class Encoder(nn.Module):
     def __init__(self, vocab_size, hidden_size):
         super(Encoder, self).__init__()
 
-        self.hidden = torch.zeros(2, 1, hidden_size)
+        self.hidden    = torch.zeros(2, 1, hidden_size)
 
         self.embedding = nn.Embedding(vocab_size, hidden_size)
-        self.gru = nn.GRU(hidden_size, hidden_size, batch_first=True, bidirectional=True)
+        self.gru       = nn.GRU(hidden_size, hidden_size, batch_first=True, bidirectional=True)
 
     def forward(self, input_seq):
         output              = self.embedding(input_seq)
