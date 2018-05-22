@@ -34,12 +34,14 @@ class Vocabulary:
     -------
     clean_word(word)
         Static. Returns `word` converted to lowercase with whitespace and certain punctionation stripped off the ends.
-    sequence(words)
-        Returns indices corresponding to mappings from cleaned `words` with SOS and EOS tokens concatenated.
     indexify(words)
         Returns indices corresponding to mappings from `words`.
     wordify(indices)
         Returns words corresponding to mappings from `indices`.
+    sequence(words)
+        Returns indices corresponding to mappings from cleaned `words` with SOS and EOS tokens concatenated.
+    desequence(sequence)
+        Returns workds corresponding to mappings from `sequence` with beginning SOS and ending EOS tokens removed.
 
     '''
 
@@ -141,27 +143,6 @@ class Vocabulary:
         vocab.discard('')
         return ["<SOS>", "<EOS>"] + list(vocab)
 
-    def sequence(self, words: List[str]) -> List[int]:
-        '''
-        Turns a boring ol' list of words into a sequence.
-
-        Cleans words in `words`, prepends an SOS token, appends an EOS token, and translates them into indices
-
-        Parameters
-        ----------
-        words : list of str
-            Boring ol' list of words.
-
-        Returns
-        -------
-        sequence : list of int
-            Exciting sequence ready for deep learning.
-
-        '''
-        return self.indexify([self.sos] +
-                             [Vocabulary.clean_word(word) for word in words] +
-                             [self.eos])
-
     def indexify(self, words: List[str]) -> List[int]:
         '''
         Translates words into indices based on this instance's internal vocabulary mapping.
@@ -213,3 +194,45 @@ class Vocabulary:
             return [self._vocab[index] for index in indices]
         except IndexError:
             raise KeyError("`indices` cannot contain values greater than size of vocabulary")
+
+    def sequence(self, words: List[str]) -> List[int]:
+        '''
+        Cleans words in `words`, prepends an SOS token, appends an EOS token, and translates them into indices.
+
+        Turns a boring ol' list of words into an exciting deep-learning-ready sequence.
+
+        Parameters
+        ----------
+        words : list of str
+            Boring ol' list of words.
+
+        Returns
+        -------
+        sequence : list of int
+            Exciting sequence ready for deep learning.
+
+        '''
+        return self.indexify([self.sos] +
+                             [Vocabulary.clean_word(word) for word in words] +
+                             [self.eos])
+
+    def desequence(self, sequence: List[int]) -> List[str]:
+        '''
+        Strips off beginning SOS and ending EOS tokens and translates the rest of the sequence into words.
+
+        Parameters
+        ----------
+        sequence : list of int
+            Indices that map to words in this instance's vocabulary.
+
+        Returns
+        -------
+        words : list of str
+            Words corresponding to mappings from `sequence` with beginning SOS and ending EOS tokens removed.
+
+        '''
+        if sequence[0] != 0:
+            raise ValueError("`sequence` must begin with SOS token index 0")
+        if sequence[-1] != 1:
+            raise ValueError("`sequence` must end with EOS token index 1")
+        return self.wordify(sequence[1:-1])
