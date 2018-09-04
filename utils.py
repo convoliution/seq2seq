@@ -41,7 +41,7 @@ class Vocabulary:
     sequence(words)
         Returns indices corresponding to mappings from cleaned `words` with SOS and EOS tokens concatenated.
     desequence(sequence)
-        Returns workds corresponding to mappings from `sequence` with beginning SOS and ending EOS tokens removed.
+        Returns words corresponding to mappings from `sequence` with beginning SOS and ending EOS tokens removed.
 
     '''
 
